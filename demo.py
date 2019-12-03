@@ -1,14 +1,16 @@
 from tkinter import *
-
-chosen_spell = "ex1"
+import text_generator as tg
+chosen_spell_book = "spongebob"
 
 player_health = 100
 enemy_health = 100
-
+text_generating_length = 150
+text_generating_temperature = 0.7
 class Spellbooks:
-    spellbooks = ["ex1", "ex2", "ex3"]
+    spellbooks = ["spongebob", "Quenya", "love_letter"]
 
     def __init__(self, master):
+        self.sess = None # for gpt2 model
         self.master = master
         self.frame = Frame(self.master)
         self.select_button = Button(self.frame, text='Select', width=25, command=self.new_window)
@@ -22,19 +24,23 @@ class Spellbooks:
         self.option.pack()
 
     def new_window(self):
-        print(self.spellbook.get())
-
+        global sess
+        global chosen_spell_book
+        print("spellbook " + self.spellbook.get() + " is loading...")
+        self.sess = tg.load(self.spellbook.get())
         self.newWindow = Toplevel(self.master)
-        self.app = GamePlay(self.newWindow)
+        self.app = GamePlay(self.newWindow, self.spellbook.get(), self.sess)
 
     def select(self, master):
         print("value is", self.spellbook.get())
         master.quit()
 
 class GamePlay:
-    def __init__(self, master):
+    def __init__(self, master, spellbook, sess):
         self.master = master
         self.frame = Frame(self.master)
+        self.spellbook = spellbook
+        self.sess = sess
         # create prompt
         self.prompt_label = Label(master, text="Prompt")
         self.prompt_label.grid(row=0, column=0, sticky=W, pady=2)
@@ -57,7 +63,10 @@ class GamePlay:
         self.master.destroy()
 
     def process_entry(self):
-        print(self.prompt_entry.get())
+        print("spellbook selected :" + self.spellbook)
+        print("prefix : " + self.prompt_entry.get() + " generating text...")
+        text_result = tg.generate(self.spellbook, text_generating_length, text_generating_temperature, str(self.prompt_entry.get()), self.sess)
+        print(text_result)
 
 def main():
     root = Tk()
