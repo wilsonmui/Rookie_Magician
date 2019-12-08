@@ -55,7 +55,7 @@ class Spellbooks:
         print("spellbook " + self.spellbook.get() + " is loading...")
         self.sess = tg.load(self.spellbook.get()) # for gpt2 model
         self.newWindow = Toplevel(self.master)
-        self.app = GamePlay(self.newWindow, self.spellbook.get(), self.sess)
+        self.app = GamePlay(self.newWindow, self.spellbook.get(), self.sess, self.equipment.keywords)
 
     def select(self, master):
         print("value is", self.spellbook.get())
@@ -71,10 +71,11 @@ class Spellbooks:
 # EOF class spellbook
 
 class GamePlay:
-    def __init__(self, master, spellbook, sess):
+    def __init__(self, master, spellbook, sess, player_keywords):
         self.master = master
         self.frame = Frame(self.master)
         self.spellbook = spellbook
+        self.player_keywords = player_keywords
         self.sess = sess
         # create prompt
         self.prompt_label = Label(master, text="Prompt")
@@ -119,16 +120,16 @@ class GamePlay:
         spellbook_keywords = []
         # Start of testing block
         if self.spellbook == "spongebob":
-            player_keywords = ["yeah", "laugh", "bubble", "meow", "go", "work"]
+            # player_keywords = ["yeah", "laugh", "bubble", "meow", "go", "work"]
             spellbook_keywords = ["spongebob", "patrick", "squidward"]
         elif self.spellbook == "love_letter":
-            player_keywords = ["man", "dear", "love", "want", "life"]
+            # player_keywords = ["man", "dear", "love", "want", "life"]
             spellbook_keywords = ["will", "like", "hope"]
         elif self.spellbook == "grey":
-            player_keywords = ["christian", "want", "like", "down", "tie"]
+            # player_keywords = ["christian", "want", "like", "down", "tie"]
             spellbook_keywords = ["eyes", "grey", "into"]
 
-        keywords =  player_keywords[0:7] + spellbook_keywords
+        keywords =  self.player_keywords[0:7] + spellbook_keywords
 
         print_keywords = "keywords: "
         for i in range(len(keywords)):
@@ -149,7 +150,7 @@ class GamePlay:
 
     def get_text_generating_temperature(self):
         if self.spellbook == "spongebob":
-            return 0.7
+            return 0.8
         elif self.spellbook == "love_letter":
             return 0.7
         elif self.spellbook == "grey":
