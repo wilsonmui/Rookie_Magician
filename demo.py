@@ -34,7 +34,9 @@ class Spellbooks:
     def select(self, master):
         print("value is", self.spellbook.get())
         master.quit()
-
+    def set_spellbook_keywords(self):
+        # TODO: set keywords for each spellbook
+        pass
 class GamePlay:
     def __init__(self, master, spellbook, sess):
         self.master = master
