@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter.scrolledtext import ScrolledText
 import text_generator as tg
 import word_matching
 chosen_spell_book = "spongebob"
@@ -7,15 +8,16 @@ player_health = 100
 enemy_health = 100
 text_generating_length = 150
 text_generating_temperature = 0.7
+
+# initial menu
 class Spellbooks:
     spellbooks = ["spongebob", "quenya", "love_letter", "grey"]
 
-    def __init__(self, master):
+    def __init__(self, master, equipment):
+        self.equipment = equipment
         self.sess = None # for gpt2 model
         self.master = master
         self.frame = Frame(self.master)
-        self.select_button = Button(self.frame, text='Select', width=25, command=self.new_window)
-        self.select_button.pack()
         self.frame.pack()
 
         self.spellbook = StringVar(master)
@@ -23,6 +25,29 @@ class Spellbooks:
 
         self.option = OptionMenu(master, self.spellbook, self.spellbooks[0], self.spellbooks[1], self.spellbooks[2])
         self.option.pack()
+
+        self.select_button = Button(self.frame, text='Select', width=25, command=self.new_window)
+        self.select_button.pack()
+
+        # keyword entry
+        self.entry_label = Label(master, text="keyword entry:")
+        self.entry_label.pack()
+        self.keyword_input = Entry(master)
+        self.keyword_input.bind('<Return>', self.enter_keyword)
+        self.keyword_input.pack()
+
+        # show equipped keywords
+        self.keywords_label = Label(master, text="player entered keywords:")
+        self.keywords_label.pack()
+        self.keywords_list = ScrolledText(master, width=30, height=10)
+        self.keywords_list.pack()
+
+    def enter_keyword(self, event=None):
+        word = self.keyword_input.get()
+        self.equipment.keywords.append(word)
+        print("current keywords list length: " + str(len(self.equipment.keywords)))
+        self.keywords_list.insert('insert', word + '\n')
+        self.keyword_input.delete(0, 'end')
 
     def new_window(self):
         global sess
@@ -96,7 +121,8 @@ class GamePlay:
         return text_result
 # EOF class GamePlay
 
-class equipment:
+class Equipment:
+    keywords = []
     def __init__(self):
         # TODO: setting layout, including showing player equipped keywords, add/remove keywords, and showing spellbook keywords
 
@@ -110,7 +136,8 @@ class equipment:
 
 def main():
     root = Tk()
-    app = Spellbooks(root)
+    equipment = Equipment()
+    app = Spellbooks(root, equipment)
     root.mainloop()
 
 if __name__ == '__main__':
