@@ -101,7 +101,7 @@ class GamePlay:
     def process_entry(self):
         print("spellbook selected :" + self.spellbook)
         print("prefix : " + self.prompt_entry.get() + " generating text...")
-        legth, temperature = self.get_text_generating_length_and_temperature()
+        length, temperature = self.get_text_generating_length_and_temperature()
         text_result = tg.generate(self.spellbook, length, temperature, str(self.prompt_entry.get()), self.sess)
         text_result = self.prune_text_result(text_result, length)
         print(text_result + "...", flush = True)
@@ -128,7 +128,7 @@ class GamePlay:
             spellbook_keywords = ["will", "like", "hope"]
         elif self.spellbook == "grey":
             # player_keywords = ["christian", "want", "like", "down", "tie"]
-            spellbook_keywords = ["eyes", "grey", "into"]
+            spellbook_keywords = ["take", "grey", "into"]
 
         keywords =  self.player_keywords[0:7] + spellbook_keywords
 
@@ -147,7 +147,7 @@ class GamePlay:
             if text_end_index != -1:
                 text_result = text_result[0:text_end_index]
                 break
-        return text_result
+        return text_result.replace("’", "\'").replace("”", "\"").replace("“", "\"")
 
     def get_text_generating_length_and_temperature(self):
         if self.spellbook == "spongebob":
