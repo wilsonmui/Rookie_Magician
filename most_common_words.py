@@ -3,7 +3,7 @@ def main():
     books = ["grey", "love_letter", "quenya", "spongebob"]
     symbols = [',', '.', '\"', '?', '!'] # TODO: to complete the list
     generate_common("grey", symbols)
-    symbols = [',', '.', '?', '!'] # TODO: to complete the list
+    symbols = [',', '.', '?', '!', '“'] # TODO: to complete the list
     generate_common("love_letter", symbols)
     symbols = [',', '.', '\"', '?', '!'] # TODO: to complete the list
     generate_common("quenya", symbols)
