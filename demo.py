@@ -35,6 +35,7 @@ class Spellbooks:
     def select(self, master):
         print("value is", self.spellbook.get())
         master.quit()
+
     def set_spellbook_keywords(self):
         # TODO: set keywords for each spellbook
         pass
@@ -42,6 +43,7 @@ class Spellbooks:
     def show_equip_window(self):
         # TODO: show keywords equipment window
         pass
+# EOF class spellbook
 
 class GamePlay:
     def __init__(self, master, spellbook, sess):
@@ -74,17 +76,26 @@ class GamePlay:
         print("spellbook selected :" + self.spellbook)
         print("prefix : " + self.prompt_entry.get() + " generating text...")
         text_result = tg.generate(self.spellbook, text_generating_length, text_generating_temperature, str(self.prompt_entry.get()), self.sess)
-        print(text_result)
 
-    def matching_keyword(self):
+        print(text_result, flush = True)
+        self.show_generated_text()
+        self.matching_keyword(text_result, self.get_keywords())
 
-        pass
+    def matching_keyword(self, text_result, keywords):
+        matching_count = word_matching.word_matching(text_result, keywords)
+        print("keywords match:" + matching_count, flush = True)
 
     def show_generated_text(self):
         # TODO: display text_result to interface
         pass
+    def get_keywords(self):
+        # TODO: get keywords of both player and spellbook
+        pass
+    def cut_text_result(self, text_result):
+        # TODO: prune text result
+        return text_result
+# EOF class GamePlay
 
-    def
 class equipment:
     def __init__(self):
         # TODO: setting layout, including showing player equipped keywords, add/remove keywords, and showing spellbook keywords

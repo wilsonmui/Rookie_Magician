@@ -1,4 +1,4 @@
-def word_matching(keywords, text):
+def word_matching(text, keywords):
     keywords = convert_keywords(keywords)
     text = convert_text(text)
     matching_count = 0
@@ -12,7 +12,7 @@ def word_matching(keywords, text):
                 matching_count += 1
             else :
                 break
-                
+
     return matching_count
 def convert_keywords(keywords):
     # add spaces to both front and end of each keywords
