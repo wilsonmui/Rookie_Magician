@@ -5,10 +5,10 @@ chosen_spell_book = "spongebob"
 
 player_health = 100
 enemy_health = 100
-text_generating_length = 150
+text_generating_length = 500
 text_generating_temperature = 0.7
 class Spellbooks:
-    spellbooks = ["spongebob", "quenya", "love_letter", "grey"]
+    spellbooks = ["spongebob", "love_letter", "grey"]
 
     def __init__(self, master):
         self.sess = None # for gpt2 model
@@ -75,25 +75,60 @@ class GamePlay:
     def process_entry(self):
         print("spellbook selected :" + self.spellbook)
         print("prefix : " + self.prompt_entry.get() + " generating text...")
-        text_result = tg.generate(self.spellbook, text_generating_length, text_generating_temperature, str(self.prompt_entry.get()), self.sess)
-
-        print(text_result, flush = True)
+        text_result = tg.generate(self.spellbook, text_generating_length, self.get_text_generating_temperature(), str(self.prompt_entry.get()), self.sess)
+        text_result = self.prune_text_result(text_result)
+        print(text_result + "...", flush = True)
         self.show_generated_text()
         self.matching_keyword(text_result, self.get_keywords())
 
     def matching_keyword(self, text_result, keywords):
         matching_count = word_matching.word_matching(text_result, keywords)
-        print("keywords match:" + matching_count, flush = True)
+        print("keywords match:" + str(matching_count), flush = True)
 
     def show_generated_text(self):
         # TODO: display text_result to interface
         pass
     def get_keywords(self):
         # TODO: get keywords of both player and spellbook
-        pass
-    def cut_text_result(self, text_result):
-        # TODO: prune text result
+        player_keywords = []
+        spellbook_keywords = []
+        # Start of testing block
+        if self.spellbook == "spongebob":
+            player_keywords = ["yeah", "laugh", "bubble", "meow", "go", "work"]
+            spellbook_keywords = ["spongebob", "patrick", "squidward"]
+        elif self.spellbook == "love_letter":
+            player_keywords = ["man", "dear", "love", "want", "life"]
+            spellbook_keywords = ["will", "like", "hope"]
+        elif self.spellbook == "grey":
+            player_keywords = ["christian", "want", "like", "down", "tie"]
+            spellbook_keywords = ["eyes", "grey", "into"]
+
+        keywords =  player_keywords[0:7] + spellbook_keywords
+
+        print_keywords = "keywords: "
+        for i in range(len(keywords)):
+            print_keywords += keywords[i] + ", "
+        print(print_keywords, flush = True)
+        return keywords
+        # End of testing block
+    def prune_text_result(self, text_result):
+        text_end_index = 0
+        min_text_length = 400
+        acceptable_end_symbol = [".", ",", "!", "?"]
+        for i in range(len(acceptable_end_symbol)):
+            text_end_index = text_result.find(acceptable_end_symbol[i], min_text_length)
+            if text_end_index != -1:
+                text_result = text_result[0:text_end_index]
+                break
         return text_result
+
+    def get_text_generating_temperature(self):
+        if self.spellbook == "spongebob":
+            return 0.7
+        elif self.spellbook == "love_letter":
+            return 0.7
+        elif self.spellbook == "grey":
+            return 0.8
 # EOF class GamePlay
 
 class equipment:
