@@ -101,8 +101,9 @@ class GamePlay:
     def process_entry(self):
         print("spellbook selected :" + self.spellbook)
         print("prefix : " + self.prompt_entry.get() + " generating text...")
-        text_result = tg.generate(self.spellbook, text_generating_length, self.get_text_generating_temperature(), str(self.prompt_entry.get()), self.sess)
-        text_result = self.prune_text_result(text_result)
+        legth, temperature = self.get_text_generating_length_and_temperature()
+        text_result = tg.generate(self.spellbook, length, temperature, str(self.prompt_entry.get()), self.sess)
+        text_result = self.prune_text_result(text_result, length)
         print(text_result + "...", flush = True)
         self.show_generated_text()
         self.matching_keyword(text_result, self.get_keywords())
@@ -121,7 +122,7 @@ class GamePlay:
         # Start of testing block
         if self.spellbook == "spongebob":
             # player_keywords = ["yeah", "laugh", "bubble", "meow", "go", "work"]
-            spellbook_keywords = ["spongebob", "patrick", "squidward"]
+            spellbook_keywords = ["spongebob", "run", "squidward"]
         elif self.spellbook == "love_letter":
             # player_keywords = ["man", "dear", "love", "want", "life"]
             spellbook_keywords = ["will", "like", "hope"]
@@ -137,9 +138,9 @@ class GamePlay:
         print(print_keywords, flush = True)
         return keywords
         # End of testing block
-    def prune_text_result(self, text_result):
+    def prune_text_result(self, text_result, length):
         text_end_index = 0
-        min_text_length = 400
+        min_text_length = length - 100
         acceptable_end_symbol = [".", ",", "!", "?"]
         for i in range(len(acceptable_end_symbol)):
             text_end_index = text_result.find(acceptable_end_symbol[i], min_text_length)
@@ -148,13 +149,13 @@ class GamePlay:
                 break
         return text_result
 
-    def get_text_generating_temperature(self):
+    def get_text_generating_length_and_temperature(self):
         if self.spellbook == "spongebob":
-            return 0.8
+            return 500, 0.8
         elif self.spellbook == "love_letter":
-            return 0.7
+            return 500, 0.7
         elif self.spellbook == "grey":
-            return 0.8
+            return 700, 0.8
 # EOF class GamePlay
 
 class Equipment:
