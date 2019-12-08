@@ -3,9 +3,9 @@
 In this game, you will play the role of a magician. In this world, spells are cast with spellbooks. 
 Spellbooks are mystical tools created from existing text in the world, which is its origin. To cast a spell, the spellbook will
 require you to prove that you understand its origins. You will do this by playing a game. Success in the game will
-create a stronger spell.
+create a stronger spell. Cast the spell to inflict damage before the enemy kills you.
 
-In the game, you will enter your own prompts to generate phrases using the spellbook. The goal is to generate phrases that 
+You will enter your own prompts to generate phrases using the spellbook. The goal is to generate phrases that 
 align with the spellbooks origin. The text will align when the spellbooks keywords are matched. Match as many keywords as 
 you can with the generated text to cast stronger spells.
 
