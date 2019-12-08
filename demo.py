@@ -1,5 +1,6 @@
 from tkinter import *
 import text_generator as tg
+import word_matching
 chosen_spell_book = "spongebob"
 
 player_health = 100
@@ -7,7 +8,7 @@ enemy_health = 100
 text_generating_length = 150
 text_generating_temperature = 0.7
 class Spellbooks:
-    spellbooks = ["spongebob", "Quenya", "love_letter"]
+    spellbooks = ["spongebob", "quenya", "love_letter", "grey"]
 
     def __init__(self, master):
         self.sess = None # for gpt2 model
@@ -27,7 +28,7 @@ class Spellbooks:
         global sess
         global chosen_spell_book
         print("spellbook " + self.spellbook.get() + " is loading...")
-        self.sess = tg.load(self.spellbook.get())
+        self.sess = tg.load(self.spellbook.get()) # for gpt2 model
         self.newWindow = Toplevel(self.master)
         self.app = GamePlay(self.newWindow, self.spellbook.get(), self.sess)
 
@@ -37,6 +38,11 @@ class Spellbooks:
     def set_spellbook_keywords(self):
         # TODO: set keywords for each spellbook
         pass
+
+    def show_equip_window(self):
+        # TODO: show keywords equipment window
+        pass
+
 class GamePlay:
     def __init__(self, master, spellbook, sess):
         self.master = master
@@ -68,7 +74,28 @@ class GamePlay:
         print("spellbook selected :" + self.spellbook)
         print("prefix : " + self.prompt_entry.get() + " generating text...")
         text_result = tg.generate(self.spellbook, text_generating_length, text_generating_temperature, str(self.prompt_entry.get()), self.sess)
-        print(text_result) # TODO: display text_result to interface
+        print(text_result)
+
+    def matching_keyword(self):
+
+        pass
+
+    def show_generated_text(self):
+        # TODO: display text_result to interface
+        pass
+
+    def
+class equipment:
+    def __init__(self):
+        # TODO: setting layout, including showing player equipped keywords, add/remove keywords, and showing spellbook keywords
+
+        pass
+    def add_keywords(self):
+        # TODO: allow user add keywords if len(keywords) < limit
+        pass
+    def remove_keywords(self):
+        # TODO: allow user remove keyword in the keywords list
+        pass
 
 def main():
     root = Tk()
