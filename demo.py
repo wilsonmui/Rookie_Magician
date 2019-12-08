@@ -77,23 +77,32 @@ class GamePlay:
         self.spellbook = spellbook
         self.player_keywords = player_keywords
         self.sess = sess
+
+        # display generated text
+        self.gen_text_label = Label(master, text="generated text:")
+        self.gen_text_label.grid(row=0, column=0, sticky=W, pady=2)
+        self.gen_text_list = ScrolledText(master, width=30, height=10)
+        self.gen_text_list.grid(row=1, column=0, sticky=W, pady=2)
+
+        # show equipped keywords
+        self.keywords_label = Label(master, text="player entered keywords:")
+        self.keywords_label.grid(row=0, column=1, sticky=W, pady=2)
+        self.keywords_list = ScrolledText(master, width=30, height=10)
+        self.keywords_list.grid(row=1, column=1, sticky=W, pady=2)
+
         # create prompt
         self.prompt_label = Label(master, text="Prompt")
-        self.prompt_label.grid(row=0, column=0, sticky=W, pady=2)
+        self.prompt_label.grid(row=2, column=0, sticky=W, pady=2)
 
         self.prompt_entry = Entry(master)
-        self.prompt_entry.grid(row=0, column=1, pady=4)
+        self.prompt_entry.grid(row=2, column=1, pady=4)
 
         self.prompt_button = Button(master, text="Cast Spell", command=self.process_entry)
-        self.prompt_button.grid(row=0, column=2, sticky=E)
+        self.prompt_button.grid(row=2, column=2, sticky=E)
 
-        # adding image (remember image should be PNG and not JPG)
-        self.img = PhotoImage(file=r"magic.gif")
-        self.img1 = self.img.subsample(2, 2)
 
-        # setting image with the help of label
-        Label(master, image=self.img1).grid(row=0, column=3,
-                                       columnspan=2, rowspan=2, padx=5, pady=5)
+
+
 
     def close_windows(self):
         self.master.destroy()
@@ -117,17 +126,13 @@ class GamePlay:
         pass
     def get_keywords(self):
         # TODO: get keywords of both player and spellbook
-        player_keywords = []
         spellbook_keywords = []
         # Start of testing block
         if self.spellbook == "spongebob":
-            # player_keywords = ["yeah", "laugh", "bubble", "meow", "go", "work"]
             spellbook_keywords = ["spongebob", "run", "squidward"]
         elif self.spellbook == "love_letter":
-            # player_keywords = ["man", "dear", "love", "want", "life"]
             spellbook_keywords = ["will", "like", "hope"]
         elif self.spellbook == "grey":
-            # player_keywords = ["christian", "want", "like", "down", "tie"]
             spellbook_keywords = ["take", "grey", "into"]
 
         keywords =  self.player_keywords[0:7] + spellbook_keywords
