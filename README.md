@@ -1,4 +1,5 @@
 # Install instructions
+Using Python 3.7.5
 You have to install
 * tensorflow
 * gpt-2-simple
@@ -13,7 +14,8 @@ pip3 install tensorflow-gpu==1.14
 ```
 
 You will also need to install the corresponding TensorFlow for your system (e.g. `tensorflow` or `tensorflow-gpu`). **TensorFlow 2.0 is currently not supported**, so TensorFlow 1.14 is recommended.
-https://developer.nvidia.com/cuda-10.0-download-archive for required DLL installation
+https://developer.nvidia.com/cuda-10.0-download-archive cuda10.0.0
+ https://developer.nvidia.com/cudnn  cudnn
 
 ## gpt-2-simple
 gpt-2-simple can be installed [via PyPI](https://pypi.org/project/gpt_2_simple/):
