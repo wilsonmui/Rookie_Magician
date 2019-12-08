@@ -66,7 +66,7 @@ class GamePlay:
         print("spellbook selected :" + self.spellbook)
         print("prefix : " + self.prompt_entry.get() + " generating text...")
         text_result = tg.generate(self.spellbook, text_generating_length, text_generating_temperature, str(self.prompt_entry.get()), self.sess)
-        print(text_result)
+        print(text_result) # TODO: display text_result to interface
 
 def main():
     root = Tk()
