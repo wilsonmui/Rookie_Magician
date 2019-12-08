@@ -36,6 +36,7 @@ there are three finetrained models currently
  - [love_letter](https://drive.google.com/open?id=1-2DyqykHOAy11lv-oaex52eLLzkzd9cb)
  - [spongebob](https://drive.google.com/open?id=1-2TlrRu-s3tuM8tmKvybyBo_zHmHbx6i)
  - [Quenya](https://drive.google.com/open?id=1-3OPrv7y7OBuKT1FYLSfpZNodgEYQVFc)
+ - [Grey](https://drive.google.com/open?id=18K0Oh8htOvhiM6LFTAgQGQ3IbBB-ghkS)
  
 Download those files and extract by "extract here" under the repo
 
