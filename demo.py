@@ -4,8 +4,7 @@ import text_generator as tg
 import word_matching
 chosen_spell_book = "spongebob"
 
-player_health = 100
-enemy_health = 100
+
 text_generating_length = 500
 text_generating_temperature = 0.7
 
@@ -71,6 +70,10 @@ class Spellbooks:
 # EOF class spellbook
 
 class GamePlay:
+
+    player_health = 100
+    enemy_health = 100
+
     def __init__(self, master, spellbook, sess, player_keywords):
         self.master = master
         self.frame = Frame(self.master)
@@ -81,27 +84,33 @@ class GamePlay:
         # display generated text
         self.gen_text_label = Label(master, text="generated text:")
         self.gen_text_label.grid(row=0, column=0, sticky=W, pady=2)
-        self.gen_text_list = ScrolledText(master, width=30, height=10)
+        self.gen_text_list = ScrolledText(master, width=30, height=10, bg='beige')
         self.gen_text_list.grid(row=1, column=0, sticky=W, pady=2)
 
         # show equipped keywords
         self.keywords_label = Label(master, text="player entered keywords:")
         self.keywords_label.grid(row=0, column=1, sticky=W, pady=2)
-        self.keywords_list = ScrolledText(master, width=30, height=10)
+        self.keywords_list = ScrolledText(master, width=30, height=10, bg='beige')
         self.keywords_list.grid(row=1, column=1, sticky=W, pady=2)
+        keywords = self.get_keywords()
+        for i in range(len(keywords)):
+            self.keywords_list.insert('insert', keywords[i] + '\n')
 
         # create prompt
-        self.prompt_label = Label(master, text="Prompt")
-        self.prompt_label.grid(row=2, column=0, sticky=W, pady=2)
+        # self.prompt_label = Label(master, text="Prompt")
+        # self.prompt_label.grid(row=2, column=0, sticky=W, pady=2)
 
         self.prompt_entry = Entry(master)
-        self.prompt_entry.grid(row=2, column=1, pady=4)
+        self.prompt_entry.grid(row=2, column=0, pady=4)
 
         self.prompt_button = Button(master, text="Cast Spell", command=self.process_entry)
-        self.prompt_button.grid(row=2, column=2, sticky=E)
+        self.prompt_button.grid(row=2, column=1, sticky=E)
 
-
-
+        # action events window
+        self.events_label = Label(master, text="events:")
+        self.events_label.grid(row=3, column=1, sticky=W, pady=2)
+        self.events_list = ScrolledText(master, width=30, height=10, bg='beige')
+        self.events_list.grid(row=4, column=1, sticky=W, pady=2)
 
 
     def close_windows(self):
@@ -114,16 +123,41 @@ class GamePlay:
         text_result = tg.generate(self.spellbook, length, temperature, str(self.prompt_entry.get()), self.sess)
         text_result = self.prune_text_result(text_result, length)
         print(text_result + "...", flush = True)
-        self.show_generated_text()
+        self.show_generated_text(text_result + "...")
         self.matching_keyword(text_result, self.get_keywords())
+        #self.prompt_entry.delete(0, 'end')
 
     def matching_keyword(self, text_result, keywords):
         matching_count = word_matching.word_matching(text_result, keywords)
         print("keywords match:" + str(matching_count), flush = True)
+        damage_dealt = pow(2, matching_count) / matching_count
+        spell_cast = ""
+        if self.spellbook == "spongebob":
+            spell_cast = "enchanted krabby patty magic bomb"
+        elif self.spellbook == "love_letter":
+            spell_cast = "affection aura"
+        elif self.spellbook == "grey":
+            spell_cast = "magic duct tape and chains"
+        self.events_list.insert('insert', spell_cast + " dealt " + str(damage_dealt) + " damage\n")
 
-    def show_generated_text(self):
+        # update health
+        self.player_health = self.player_health - 10
+        self.enemy_health = self.enemy_health - damage_dealt
+
+        if self.enemy_health <= 0:
+            self.events_list.insert('insert', "You defeated the enemy!\n")
+        elif self.player_health <= 0:
+            self.events_list.insert('insert', "The enemy has killed you.\n")
+        else:
+            self.events_list.insert('insert', "Your health: " + str(self.player_health) + "\n")
+            self.events_list.insert('insert', "Enemy health: " + str(self.enemy_health) + "\n")
+
+
+    def show_generated_text(self, text):
         # TODO: display text_result to interface
+        self.gen_text_list.insert('insert', text + '\n')
         pass
+
     def get_keywords(self):
         # TODO: get keywords of both player and spellbook
         spellbook_keywords = []
@@ -140,9 +174,10 @@ class GamePlay:
         print_keywords = "keywords: "
         for i in range(len(keywords)):
             print_keywords += keywords[i] + ", "
-        print(print_keywords, flush = True)
+        # print(print_keywords, flush = True)
         return keywords
         # End of testing block
+
     def prune_text_result(self, text_result, length):
         text_end_index = 0
         min_text_length = length - 100
