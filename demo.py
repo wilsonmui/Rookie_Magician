@@ -130,7 +130,10 @@ class GamePlay:
     def matching_keyword(self, text_result, keywords):
         matching_count = word_matching.word_matching(text_result, keywords)
         print("keywords match:" + str(matching_count), flush = True)
-        damage_dealt = pow(2, matching_count) / matching_count
+        if matching_count != 0:
+            damage_dealt = int(pow(2, matching_count) / matching_count)
+        else:
+            damage_dealt = 0
         spell_cast = ""
         if self.spellbook == "spongebob":
             spell_cast = "enchanted krabby patty magic bomb"
